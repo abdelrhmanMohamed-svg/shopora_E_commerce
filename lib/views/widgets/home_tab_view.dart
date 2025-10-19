@@ -1,0 +1,80 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:shopora_e_commerce/model/home_carosel_item_model.dart';
+import 'package:shopora_e_commerce/model/product_item_model.dart';
+import 'package:shopora_e_commerce/views/widgets/grid_item.dart';
+
+class HomeTabView extends StatelessWidget {
+  const HomeTabView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FlutterCarousel.builder(
+            options: FlutterCarouselOptions(
+              autoPlay: true,
+              viewportFraction: 1,
+              height: size.height * 0.2,
+              enlargeCenterPage: true,
+              showIndicator: true,
+              slideIndicator: CircularWaveSlideIndicator(),
+            ),
+            itemCount: dummyHomeCarouselItems.length,
+            itemBuilder:
+                (BuildContext context, int itemIndex, int pageViewIndex) {
+                  final HomeCarouselItemModel banner =
+                      dummyHomeCarouselItems[itemIndex];
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: CachedNetworkImage(
+                      imageUrl: banner.imgUrl,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator.adaptive()),
+                    ),
+                  );
+                },
+          ),
+
+          const SizedBox(height: 20.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "New Arrivals 🔥",
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600),
+              ),
+              Text(
+                "see All",
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20.0),
+          GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: size.width * 0.02,
+              mainAxisSpacing: size.height * 0.02,
+              childAspectRatio: 0.86,
+            ),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: dummyProducts.length,
+            itemBuilder: (context, index) =>
+                GridItem(productItem: dummyProducts[index]),
+          ),
+        ],
+      ),
+    );
+  }
+}
