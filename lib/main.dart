@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopora_e_commerce/views/pages/home_page.dart';
+import 'package:shopora_e_commerce/root.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,10 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'shopora_e_commerce',
+
       theme: ThemeData(
+        useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HomePage(),
+      home: const Root(),
     );
   }
 }
