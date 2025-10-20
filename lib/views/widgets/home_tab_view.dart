@@ -5,6 +5,7 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:shopora_e_commerce/model/home_carosel_item_model.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
 import 'package:shopora_e_commerce/model_views/home_cubit/home_cubit.dart';
+import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/grid_item.dart';
 
 class HomeTabView extends StatelessWidget {
@@ -79,23 +80,22 @@ class HomeTabView extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: dummyProducts.length,
-                  itemBuilder: (context, index) =>
-                      GridItem(productItem: state.products[index]),
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () => Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).pushNamed(AppRoutes.productDetails),
+                    child: GridItem(productItem: state.products[index]),
+                  ),
                 ),
               ],
             ),
           );
-
-        }
-        else if (state is HomeError) {
-          return Center(
-            child: Text(state.message),
-          );
-        }
-        else{
+        } else if (state is HomeError) {
+          return Center(child: Text(state.message));
+        } else {
           return const SizedBox.shrink();
         }
-        
       },
     );
   }
