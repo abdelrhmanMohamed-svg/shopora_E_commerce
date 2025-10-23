@@ -84,7 +84,7 @@ class HomeTabView extends StatelessWidget {
                     onTap: () => Navigator.of(
                       context,
                       rootNavigator: true,
-                    ).pushNamed(AppRoutes.productDetails),
+                    ).pushNamed(AppRoutes.productDetails,arguments: dummyProducts[index].id),
                     child: GridItem(productItem: state.products[index]),
                   ),
                 ),

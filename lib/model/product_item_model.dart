@@ -3,6 +3,7 @@ enum ProductSize {
   M,
   L,
   XL;
+  
 
   static ProductSize fromString(String size) {
     switch (size.toUpperCase()) {
@@ -41,6 +42,7 @@ class ProductItemModel {
     required this.category,
     this.averageRate = 4.5,
   });
+ 
 
   ProductItemModel copyWith({
     String? id,

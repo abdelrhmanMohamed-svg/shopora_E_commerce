@@ -86,6 +86,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 15.0),
                 TabBar(
+                  labelStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                   controller: _tabController,
                   unselectedLabelColor: AppColors.gery,
                   tabs: [

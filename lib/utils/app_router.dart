@@ -7,8 +7,9 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.productDetails:
+        final productId = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => const ProductDetailsPage(),
+          builder: (context) => ProductDetailsPage(productId: productId),
         );
       case AppRoutes.root:
         return MaterialPageRoute(builder: (context) => const Root());

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
+import 'package:shopora_e_commerce/utils/app_colors.dart';
 
 class GridItem extends StatelessWidget {
   const GridItem({super.key, required this.productItem});
@@ -16,7 +17,7 @@ class GridItem extends StatelessWidget {
           width: size.width * 0.45,
 
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: AppColors.grey200,
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Stack(
