@@ -4,11 +4,14 @@ class AddToCartModel {
   final String productId;
   final int quantity;
   final ProductSize size;
+  final ProductItemModel product;
+
 
   AddToCartModel({
     required this.productId,
     required this.quantity,
     required this.size,
+    required this.product,
   });
 
   

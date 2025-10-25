@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopora_e_commerce/root.dart';
+import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'shopora_e_commerce',
 
       theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.white,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),

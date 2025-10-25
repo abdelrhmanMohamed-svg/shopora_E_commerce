@@ -58,6 +58,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(AddingToCart());
     Future.delayed(Duration(seconds: 2), () {
       final newItem = AddToCartModel(
+        product: dummyProducts.firstWhere((item) => item.id == productId),
         productId: productId,
         quantity: quantity,
         size: size!,
