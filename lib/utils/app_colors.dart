@@ -8,5 +8,5 @@ class AppColors {
   static Color grey200 = Colors.grey.shade200;
   static Color yellow = Colors.yellow;
   static Color black45 = Colors.black45;
-
+  static Color black12 = Colors.black12;
 }
