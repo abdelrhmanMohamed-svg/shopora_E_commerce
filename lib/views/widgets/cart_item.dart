@@ -65,10 +65,27 @@ class CartItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CounterWidget(
-                      value: 1,
-                      cubit: cubit,
-                      productId: item.productId,
+                    BlocBuilder<CartCubit, CartState>(
+                      bloc: cubit,
+                      buildWhen: (previous, current) =>
+                          current is CounterUpdated &&
+                              current.productId == item.productId ||
+                          current is CartLoaded,
+                      builder: (context, state) {
+                        if (state is CounterUpdated) {
+                          return CounterWidget(
+                            value: state.value,
+                            cubit: cubit,
+                            productId: item.productId,
+                          );
+                        }
+                        return CounterWidget(
+                          initialValue: item.quantity,
+                          value: item.quantity,
+                          cubit: cubit,
+                          productId: item.productId,
+                        );
+                      },
                     ),
                     Text(
                       "\$${item.product.price}",

@@ -18,3 +18,10 @@ final class CartError extends CartState {
 
   CartError({required this.message});
 }
+
+final class CounterUpdated extends CartState {
+  final String productId;
+  final int value;
+
+  CounterUpdated({required this.value, required this.productId});
+}

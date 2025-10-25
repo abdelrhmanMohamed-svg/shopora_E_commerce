@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 
@@ -8,12 +7,12 @@ class CounterWidget extends StatelessWidget {
     required this.value,
     required this.cubit,
     required this.productId,
-   
+    this.initialValue,
   });
   final int value;
   final dynamic cubit;
   final String productId;
- 
+  final int? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +29,9 @@ class CounterWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           InkWell(
-            onTap: () {
-              cubit.decrementCounter(productId);
-            },
+            onTap: () => initialValue != null
+                ? cubit.decrementCounter(productId, initialValue)
+                : cubit.decrementCounter(productId),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -40,7 +39,7 @@ class CounterWidget extends StatelessWidget {
               ),
               child: Icon(
                 Icons.remove,
-                color: value == 1 ?AppColors.black12 : AppColors.black,
+                color: value == 1 ? AppColors.black12 : AppColors.black,
               ),
             ),
           ),
@@ -54,9 +53,9 @@ class CounterWidget extends StatelessWidget {
           const SizedBox(width: 3),
 
           InkWell(
-            onTap: () {
-              cubit.incrementCounter(productId);
-            },
+            onTap: () => initialValue != null
+                ? cubit.incrementCounter(productId, initialValue)
+                : cubit.incrementCounter(productId),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
