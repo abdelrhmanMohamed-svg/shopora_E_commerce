@@ -30,6 +30,8 @@ class ProductItemModel {
   final bool isFavorite;
   final String category;
   final double averageRate;
+ 
+
 
   ProductItemModel({
     required this.id,
@@ -41,6 +43,7 @@ class ProductItemModel {
     this.isFavorite = false,
     required this.category,
     this.averageRate = 4.5,
+   
   });
  
 
@@ -53,8 +56,7 @@ class ProductItemModel {
     bool? isFavorite,
     String? category,
     double? averageRate,
-    int? quantity,
-    ProductSize? size,
+    
   }) {
     return ProductItemModel(
       id: id ?? this.id,
@@ -65,6 +67,7 @@ class ProductItemModel {
       isFavorite: isFavorite ?? this.isFavorite,
       category: category ?? this.category,
       averageRate: averageRate ?? this.averageRate,
+      
     );
   }
 
