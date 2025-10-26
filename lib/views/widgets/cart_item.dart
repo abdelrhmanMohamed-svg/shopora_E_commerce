@@ -15,7 +15,7 @@ class CartItem extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final cubit = BlocProvider.of<CartCubit>(context);
     return Padding(
-      padding: const EdgeInsets.only(left: 14.0, right: 14.0, bottom: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

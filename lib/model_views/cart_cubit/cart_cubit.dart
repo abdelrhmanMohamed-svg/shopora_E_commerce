@@ -10,9 +10,8 @@ class CartCubit extends Cubit<CartState> {
 
   void loadCartData() {
     emit(CartLoading());
-    Future.delayed(Duration(seconds: 1), () {
-      emit(CartLoaded(cartItems: dummyCartItems));
-    });
+
+    emit(CartLoaded(cartItems: dummyCartItems));
   }
 
   void incrementCounter(String productId, [int? initialValue]) {
@@ -29,7 +28,7 @@ class CartCubit extends Cubit<CartState> {
     }
     if (quantity > 1) {
       quantity--;
-      emit(CounterUpdated(value: quantity,productId: productId));
+      emit(CounterUpdated(value: quantity, productId: productId));
     }
   }
 }

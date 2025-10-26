@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopora_e_commerce/root.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';

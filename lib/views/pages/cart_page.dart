@@ -25,36 +25,36 @@ class CartPage extends StatelessWidget {
                 current is CartLoading,
             builder: (context, state) {
               if (state is CartLoading) {
-                return Scaffold(body: Center(child: CircularProgressIndicator()));
+                return Center(child: CircularProgressIndicator());
               } else if (state is CartLoaded) {
-                return Scaffold(
-                  appBar: AppBar(),
-                  body: state.cartItems.isEmpty
-                      ? Center(child: Text("Cart is empty"))
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    CartItem(item: state.cartItems[index]),
-                                separatorBuilder: (context, index) =>
-                                    Divider(color: AppColors.grey300),
-                                itemCount: state.cartItems.length,
-                              ),
-                            ],
-                          ),
+                return state.cartItems.isEmpty
+                    ? Center(child: Text("Cart is empty"))
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) =>
+                                  CartItem(item: state.cartItems[index]),
+                              separatorBuilder: (context, index) =>
+                                  Divider(color: AppColors.grey300),
+                              itemCount: state.cartItems.length,
+                            ),
+                          ],
                         ),
-                );
+                      );
               } else if (state is CartError) {
                 return Scaffold(body: Center(child: Text(state.message)));
               } else {
-                return Scaffold(body: Center(child: Text("something went wrong")));
+                return Scaffold(
+                  body: Center(child: Text("something went wrong")),
+                );
               }
             },
           );
-        }
+        },
       ),
     );
   }

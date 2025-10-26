@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopora_e_commerce/model/product_item_model.dart';
 import 'package:shopora_e_commerce/model_views/product_details_cubit/product_details_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/views/widgets/add_to_cart_row_widget.dart';
