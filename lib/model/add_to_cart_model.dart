@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:shopora_e_commerce/model/product_item_model.dart';
 
 class AddToCartModel {
@@ -15,5 +16,20 @@ class AddToCartModel {
   });
 
   
+
+  AddToCartModel copyWith({
+    String? productId,
+    int? quantity,
+    ProductSize? size,
+    ProductItemModel? product,
+  }) {
+    return AddToCartModel(
+      productId: productId ?? this.productId,
+      quantity: quantity ?? this.quantity,
+      size: size ?? this.size,
+      product: product ?? this.product,
+    );
+  }
+
 }
 List<AddToCartModel> dummyCartItems = [];

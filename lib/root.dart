@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/views/pages/cart_page.dart';
 import 'package:shopora_e_commerce/views/pages/favorite_page.dart';
 import 'package:shopora_e_commerce/views/pages/home_page.dart';
@@ -15,6 +16,9 @@ class Root extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppColors.white,
+        scrolledUnderElevation: 0.0,
         leading: Padding(
           padding: const EdgeInsets.only(left: 15.0),
           child: CircleAvatar(

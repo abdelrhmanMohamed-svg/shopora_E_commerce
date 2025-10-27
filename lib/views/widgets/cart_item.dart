@@ -15,7 +15,7 @@ class CartItem extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final cubit = BlocProvider.of<CartCubit>(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,37 +62,47 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    BlocBuilder<CartCubit, CartState>(
-                      bloc: cubit,
-                      buildWhen: (previous, current) =>
-                          current is CounterUpdated &&
-                              current.productId == item.productId ||
-                          current is CartLoaded,
-                      builder: (context, state) {
-                        if (state is CounterUpdated) {
-                          return CounterWidget(
+                BlocBuilder<CartCubit, CartState>(
+                  bloc: cubit,
+                  buildWhen: (previous, current) =>
+                      current is CounterUpdated &&
+                          current.productId == item.productId ||
+                      current is CartLoaded,
+                  builder: (context, state) {
+                    if (state is CounterUpdated) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CounterWidget(
                             value: state.value,
                             cubit: cubit,
                             productId: item.productId,
-                          );
-                        }
-                        return CounterWidget(
+                          ),
+                          Text(
+                            "\$${item.product.price * state.value}",
+                            style: Theme.of(context).textTheme.headlineSmall!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CounterWidget(
                           initialValue: item.quantity,
                           value: item.quantity,
                           cubit: cubit,
                           productId: item.productId,
-                        );
-                      },
-                    ),
-                    Text(
-                      "\$${item.product.price}",
-                      style: Theme.of(context).textTheme.headlineSmall!
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  ],
+                        ),
+                        Text(
+                          "\$${item.product.price * item.quantity}",
+                          style: Theme.of(context).textTheme.headlineSmall!
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
