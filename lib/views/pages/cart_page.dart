@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model_views/cart_cubit/cart_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
+import 'package:shopora_e_commerce/utils/app_router.dart';
+import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/cart_item.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
@@ -78,11 +80,6 @@ class CartPage extends StatelessWidget {
                                         value: subtotalState.subtotal + 10,
                                       ),
                                       SizedBox(height: size.height * 0.02),
-                                      CustomButton(
-                                        onPressed: () {},
-                                        title: "Checkout",
-                                      ),
-                                      SizedBox(height: size.height * 0.01),
                                     ],
                                   );
                                 } else {
@@ -109,15 +106,19 @@ class CartPage extends StatelessWidget {
                                         value: state.subtotal + 10,
                                       ),
                                       SizedBox(height: size.height * 0.02),
-                                      CustomButton(
-                                        onPressed: () {},
-                                        title: "Checkout",
-                                      ),
                                     ],
                                   );
                                 }
                               },
                             ),
+                            CustomButton(
+                              onPressed: () => Navigator.of(
+                                context,
+                                rootNavigator: true,
+                              ).pushNamed(AppRoutes.checkoutRoute),
+                              title: "Checkout",
+                            ),
+                            SizedBox(height: size.height * 0.01),
                           ],
                         ),
                       );

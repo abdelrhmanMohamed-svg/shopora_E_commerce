@@ -81,10 +81,11 @@ class HomeTabView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: dummyProducts.length,
                   itemBuilder: (context, index) => InkWell(
-                    onTap: () => Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).pushNamed(AppRoutes.productDetails,arguments: dummyProducts[index].id),
+                    onTap: () =>
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          AppRoutes.productDetailsRoute,
+                          arguments: dummyProducts[index].id,
+                        ),
                     child: GridItem(productItem: state.products[index]),
                   ),
                 ),
