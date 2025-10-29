@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shopora_e_commerce/model/add_to_cart_model.dart';
+import 'package:shopora_e_commerce/model/new_card_model.dart';
 
 part 'checkout_state.dart';
 
@@ -18,12 +19,18 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       0,
       (previousValue, item) => previousValue + item.quantity,
     );
+    final card = _fetchSelectedCard();
     emit(
       CheckoutLoaded(
         cartItems: dummyCartItems,
         totalAmount: total + 10,
         numOfItems: numOfItems,
+        selectedCard: card,
+        newCards: dummyNewCards,
       ),
     );
   }
+
+  NewCardModel? _fetchSelectedCard() =>
+      dummyNewCards.isNotEmpty ? dummyNewCards.first : null;
 }

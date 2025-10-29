@@ -1,11 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopora_e_commerce/model/new_card_model.dart';
 import 'package:shopora_e_commerce/model_views/checkout/checkout_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
+import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
 import 'package:shopora_e_commerce/views/widgets/epmty_payment_address.dart';
 import 'package:shopora_e_commerce/views/widgets/headline_title.dart';
+import 'package:shopora_e_commerce/views/widgets/model_bottom_sheet_card_item.dart';
+import 'package:shopora_e_commerce/views/widgets/payment_card_item.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});
@@ -36,6 +40,7 @@ class CheckoutPage extends StatelessWidget {
                   current is CheckoutLoaded ||
                   current is CheckoutError ||
                   current is CheckoutLoading,
+
               builder: (context, state) {
                 if (state is CheckoutLoading) {
                   return Center(child: CircularProgressIndicator.adaptive());
@@ -54,7 +59,10 @@ class CheckoutPage extends StatelessWidget {
                           children: [
                             HeadlineTitle(title: "Address", onTap: () {}),
                             SizedBox(height: size.height * 0.006),
-                            EpmtyPaymentAddress(title: "Add new address"),
+                            EpmtyPaymentAddress(
+                              title: "Add new address",
+                              onTap: () {},
+                            ),
                             SizedBox(height: size.height * 0.03),
 
                             HeadlineTitle(
@@ -158,9 +166,24 @@ class CheckoutPage extends StatelessWidget {
                             SizedBox(height: size.height * 0.03),
                             HeadlineTitle(title: "Payment Method"),
                             SizedBox(height: size.height * 0.006),
-                            EpmtyPaymentAddress(
-                              title: "Add new payment method",
-                            ),
+                            if (state.selectedCard != null)
+                              PaymentCardItem(
+                                card: state.selectedCard!,
+                                onTap: () {
+                                  final cards = state.newCards;
+                                  showModelBottomSheet(context, cards);
+                                },
+                              )
+                            else
+                              EpmtyPaymentAddress(
+                                title: "Add new payment method",
+                                onTap: () =>
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pushNamed(AppRoutes.addCardRoute)
+                                        .then((value) {
+                                          cubit.loadCheckoutData();
+                                        }),
+                              ),
                             SizedBox(height: size.height * 0.03),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,6 +225,98 @@ class CheckoutPage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void showModelBottomSheet(BuildContext context, List<NewCardModel> cards) {
+    final Size size = MediaQuery.of(context).size;
+    showModalBottomSheet(
+      backgroundColor: AppColors.white,
+      useSafeArea: true,
+      showDragHandle: true,
+      isScrollControlled: true,
+      clipBehavior: Clip.hardEdge,
+      context: context,
+      builder: (context) {
+        return Container(
+          height: size.height * 0.6,
+          width: size.width,
+          color: AppColors.white,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25.0,
+                vertical: 10.0,
+              ),
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+                    Text(
+                      "Payment Methods",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      itemCount: cards.length,
+                      itemBuilder: (context, index) {
+                        final card = cards[index];
+                        return ModelBottomSheetCardItem(card: card);
+                      },
+                    ),
+
+                    SizedBox(height: size.height * 0.01),
+
+                    InkWell(
+                      onTap: () => Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushNamed(AppRoutes.addCardRoute),
+                      child: Card(
+                        elevation: 1.5,
+                        color: AppColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: ListTile(
+                          leading: DecoratedBox(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.grey100,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Icon(
+                                Icons.add_circle_outline_outlined,
+                                size: size.height * 0.03,
+                              ),
+                            ),
+                          ),
+                          title: Text(
+                            "Add Payment Method",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.03),
+                    CustomButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      title: "Confirm Payment",
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

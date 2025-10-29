@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
         child: title != null
             ? Text(
                 title!,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppColors.white,
                   fontWeight: FontWeight.w500,
                 ),
