@@ -15,3 +15,31 @@ final class ErrorAddingNewCard extends PaymentState {
   ErrorAddingNewCard({required this.message});
 }
 
+final class FetchingCards extends PaymentState {}
+
+final class CardsFetched extends PaymentState {
+  final List<NewCardModel> cards;
+
+  CardsFetched({required this.cards});
+}
+
+final class ErrorFetchingCards extends PaymentState {
+  final String message;
+
+  ErrorFetchingCards({required this.message});
+}
+
+final class ChooseCard extends PaymentState {
+  final NewCardModel card;
+
+  ChooseCard({required this.card});
+}
+final class ConfirmPaymentLoading extends PaymentState {}
+
+final class PaymentConfirmed extends PaymentState {}
+
+final class ErrorConfirmingPayment extends PaymentState {
+  final String message;
+
+  ErrorConfirmingPayment({required this.message});
+}

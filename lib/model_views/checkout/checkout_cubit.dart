@@ -31,6 +31,8 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     );
   }
 
-  NewCardModel? _fetchSelectedCard() =>
-      dummyNewCards.isNotEmpty ? dummyNewCards.first : null;
+  NewCardModel? _fetchSelectedCard() => dummyNewCards.firstWhere(
+    (card) => card.isSelected == true,
+    orElse: () => dummyNewCards.first,
+  );
 }
