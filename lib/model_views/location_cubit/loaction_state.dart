@@ -28,3 +28,23 @@ final class LocationErrorAdding extends LoactionState {
 
   LocationErrorAdding({required this.message});
 }
+
+final class ChosenLocation extends LoactionState {
+  final String id;
+
+  ChosenLocation({required this.id});
+}
+
+final class ConfirmLocationLoading extends LoactionState {}
+
+final class ConfirmLocationSuccess extends LoactionState {
+  final LocationItemModel location;
+
+  ConfirmLocationSuccess({required this.location});
+}
+
+final class ConfirmLocationError extends LoactionState {
+  final String message;
+
+  ConfirmLocationError({required this.message});
+}

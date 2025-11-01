@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shopora_e_commerce/model/add_to_cart_model.dart';
+import 'package:shopora_e_commerce/model/location_item_model.dart';
 import 'package:shopora_e_commerce/model/new_card_model.dart';
 
 part 'checkout_state.dart';
@@ -20,6 +21,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       (previousValue, item) => previousValue + item.quantity,
     );
     final card = _fetchSelectedCard();
+    final location = _fetchSelectedLocation();
     emit(
       CheckoutLoaded(
         cartItems: dummyCartItems,
@@ -27,12 +29,23 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         numOfItems: numOfItems,
         selectedCard: card,
         newCards: dummyNewCards,
+        chosenLocation: location,
       ),
     );
   }
 
-  NewCardModel? _fetchSelectedCard() => dummyNewCards.firstWhere(
-    (card) => card.isSelected == true,
-    orElse: () => dummyNewCards.first,
-  );
+  NewCardModel? _fetchSelectedCard() {
+    return dummyNewCards.firstWhere(
+      (card) => card.isSelected == true,
+      orElse: () => dummyNewCards.first,
+    );
+  }
+
+  LocationItemModel? _fetchSelectedLocation() {
+    try {
+      return dummyLocations.firstWhere((location) => location.isChosen == true);
+    } catch (e) {
+      return null;
+    }
+  }
 }

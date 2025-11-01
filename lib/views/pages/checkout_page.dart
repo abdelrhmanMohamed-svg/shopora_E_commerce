@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopora_e_commerce/model/location_item_model.dart';
 import 'package:shopora_e_commerce/model/new_card_model.dart';
 import 'package:shopora_e_commerce/model_views/checkout/checkout_cubit.dart';
 import 'package:shopora_e_commerce/model_views/payment_cubit/payment_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
+import 'package:shopora_e_commerce/views/widgets/default_location.dart';
 import 'package:shopora_e_commerce/views/widgets/epmty_payment_address.dart';
 import 'package:shopora_e_commerce/views/widgets/headline_title.dart';
 import 'package:shopora_e_commerce/views/widgets/model_bittom_sheet_component.dart';
@@ -61,15 +63,11 @@ class CheckoutPage extends StatelessWidget {
                           children: [
                             HeadlineTitle(title: "Address", onTap: () {}),
                             SizedBox(height: size.height * 0.006),
-                            EpmtyPaymentAddress(
-                              title: "Add new address",
-                              onTap: () {
-                                Navigator.of(
-                                  context,
-                                  rootNavigator: true,
-                                ).pushNamed(AppRoutes.addAddressRoute);
-                              },
+                            buildLocationcomponent(
+                              context,
+                              state.chosenLocation,
                             ),
+
                             SizedBox(height: size.height * 0.03),
 
                             HeadlineTitle(
@@ -172,24 +170,9 @@ class CheckoutPage extends StatelessWidget {
 
                             SizedBox(height: size.height * 0.03),
                             HeadlineTitle(title: "Payment Method"),
-                            SizedBox(height: size.height * 0.006),
-                            if (state.selectedCard != null)
-                              PaymentCardItem(
-                                card: state.selectedCard!,
-                                onTap: () {
-                                  showModelBottomSheet(context);
-                                },
-                              )
-                            else
-                              EpmtyPaymentAddress(
-                                title: "Add new payment method",
-                                onTap: () =>
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pushNamed(AppRoutes.addCardRoute)
-                                        .then((value) {
-                                          checkOutcubit.loadCheckoutData();
-                                        }),
-                              ),
+                            SizedBox(height: size.height * 0.02),
+                            buildPaymentComponent(context, state.selectedCard),
+
                             SizedBox(height: size.height * 0.03),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -256,5 +239,45 @@ class CheckoutPage extends StatelessWidget {
     ).then((value) {
       BlocProvider.of<CheckoutCubit>(context).loadCheckoutData();
     });
+  }
+
+  Widget buildLocationcomponent(
+    BuildContext context,
+    LocationItemModel? chosenLocation,
+  ) {
+    return chosenLocation != null
+        ? SelectedLocation(location: chosenLocation)
+        : EpmtyPaymentAddress(
+            title: "add new location",
+            onTap: () {
+              Navigator.of(
+                context,
+                rootNavigator: true,
+              ).pushNamed(AppRoutes.addAddressRoute).then((value) {
+                BlocProvider.of<CheckoutCubit>(context).loadCheckoutData();
+              });
+            },
+          );
+  }
+
+  Widget buildPaymentComponent(
+    BuildContext context,
+    NewCardModel? selectedCard,
+  ) {
+    return selectedCard != null
+        ? PaymentCardItem(
+            card: selectedCard,
+            onTap: () {
+              showModelBottomSheet(context);
+            },
+          )
+        : EpmtyPaymentAddress(
+            title: "Add new payment method",
+            onTap: () => Navigator.of(context, rootNavigator: true)
+                .pushNamed(AppRoutes.addCardRoute)
+                .then((value) {
+                  BlocProvider.of<CheckoutCubit>(context).loadCheckoutData();
+                }),
+          );
   }
 }

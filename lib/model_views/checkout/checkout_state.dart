@@ -13,6 +13,8 @@ final class CheckoutLoaded extends CheckoutState {
   final int numOfItems;
   final NewCardModel? selectedCard;
   final List<NewCardModel> newCards ;
+  final LocationItemModel? chosenLocation;
+
 
 
   CheckoutLoaded({
@@ -21,6 +23,8 @@ final class CheckoutLoaded extends CheckoutState {
     required this.numOfItems,
     this.selectedCard,
     required this.newCards,
+    this.chosenLocation
+
 
   });
 }
