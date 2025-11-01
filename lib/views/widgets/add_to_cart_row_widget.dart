@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
 import 'package:shopora_e_commerce/model_views/product_details_cubit/product_details_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
+import 'package:shopora_e_commerce/views/widgets/custom_snack_bar.dart';
 
 class AddToCartRowWidget extends StatelessWidget {
   const AddToCartRowWidget({super.key, required this.selectedItem});
@@ -85,9 +86,7 @@ class AddToCartRowWidget extends StatelessWidget {
                     if (size != null) {
                       cubit.addToCart(selectedItem.id);
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: const Text("Please select size")),
-                      );
+                      showCustomSnackBar(context, "Please select size");
                     }
                   },
                   label: Text(

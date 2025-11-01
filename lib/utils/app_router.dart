@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopora_e_commerce/model_views/location_cubit/loaction_cubit.dart';
 import 'package:shopora_e_commerce/model_views/product_details_cubit/product_details_cubit.dart';
 import 'package:shopora_e_commerce/root.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
-import 'package:shopora_e_commerce/views/pages/add_address_page.dart';
+import 'package:shopora_e_commerce/views/pages/add_location_page.dart';
 import 'package:shopora_e_commerce/views/pages/add_card_page.dart';
 import 'package:shopora_e_commerce/views/pages/checkout_page.dart';
 import 'package:shopora_e_commerce/views/pages/product_details_page.dart';
@@ -12,7 +13,16 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.addAddressRoute:
-        return MaterialPageRoute(builder: (context) => const AddAddressPage());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) {
+              final locationCubit = LoactionCubit();
+              locationCubit.fetchLocations();
+              return locationCubit;
+            },
+            child: const AddLocationPage(),
+          ),
+        );
 
       case AppRoutes.addCardRoute:
         return MaterialPageRoute(builder: (context) => const AddCardPage());
