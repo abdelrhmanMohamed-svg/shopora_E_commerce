@@ -63,7 +63,12 @@ class CheckoutPage extends StatelessWidget {
                             SizedBox(height: size.height * 0.006),
                             EpmtyPaymentAddress(
                               title: "Add new address",
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(
+                                  context,
+                                  rootNavigator: true,
+                                ).pushNamed(AppRoutes.addAddressRoute);
+                              },
                             ),
                             SizedBox(height: size.height * 0.03),
 

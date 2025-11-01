@@ -3,4 +3,5 @@ class AppRoutes {
   static const String productDetailsRoute = "/product-details";
   static const String checkoutRoute = "/checkout";
   static const String addCardRoute = "/checkout/add-card";
+  static const String addAddressRoute = "/checkout/add-address";
 }

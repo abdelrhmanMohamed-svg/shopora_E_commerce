@@ -10,7 +10,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,6 +17,11 @@ class MyApp extends StatelessWidget {
       title: 'shopora_e_commerce',
 
       theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          elevation: 0.0,
+          backgroundColor: AppColors.white,
+          scrolledUnderElevation: 0.0,
+        ),
         scaffoldBackgroundColor: AppColors.white,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

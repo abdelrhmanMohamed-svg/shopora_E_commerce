@@ -8,7 +8,9 @@ class TitleAndTextfieldComponent extends StatelessWidget {
     required this.hintText,
     required this.prefixIcon,
     required this.controller,
-    this.validator, this.keyboardType,
+    this.validator,
+    this.keyboardType,
+   
   });
   final String title;
   final String hintText;
@@ -16,6 +18,7 @@ class TitleAndTextfieldComponent extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +26,15 @@ class TitleAndTextfieldComponent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
-        ),
-        SizedBox(height: size.height * 0.01),
+       
+          Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: size.height * 0.01),
+        
         TextFormField(
           validator: validator,
           keyboardType: keyboardType,
