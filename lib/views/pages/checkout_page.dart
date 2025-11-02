@@ -226,7 +226,6 @@ class CheckoutPage extends StatelessWidget {
   }
 
   void showModelBottomSheet(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     showModalBottomSheet(
       backgroundColor: AppColors.white,
       useSafeArea: true,
