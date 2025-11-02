@@ -43,7 +43,10 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   LocationItemModel? _fetchSelectedLocation() {
     try {
-      return dummyLocations.firstWhere((location) => location.isChosen == true);
+      return dummyLocations.firstWhere(
+        (location) => location.isChosen == true,
+        orElse: () => dummyLocations.first,
+      );
     } catch (e) {
       return null;
     }

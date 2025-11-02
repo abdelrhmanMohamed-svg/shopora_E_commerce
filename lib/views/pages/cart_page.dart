@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model_views/cart_cubit/cart_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
-import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/cart_item.dart';
 import 'package:flutter_dash/flutter_dash.dart';

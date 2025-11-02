@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopora_e_commerce/model/location_item_model.dart';
 import 'package:shopora_e_commerce/model_views/location_cubit/loaction_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_snack_bar.dart';
 import 'package:shopora_e_commerce/views/widgets/location_item.dart';
-import 'package:shopora_e_commerce/views/widgets/title_and_textField_component.dart';
 
 class AddLocationPage extends StatefulWidget {
   const AddLocationPage({super.key});

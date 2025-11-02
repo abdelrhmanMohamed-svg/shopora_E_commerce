@@ -12,7 +12,6 @@ import 'package:shopora_e_commerce/views/widgets/default_location.dart';
 import 'package:shopora_e_commerce/views/widgets/epmty_payment_address.dart';
 import 'package:shopora_e_commerce/views/widgets/headline_title.dart';
 import 'package:shopora_e_commerce/views/widgets/model_bittom_sheet_component.dart';
-import 'package:shopora_e_commerce/views/widgets/model_bottom_sheet_card_item.dart';
 import 'package:shopora_e_commerce/views/widgets/payment_card_item.dart';
 
 class CheckoutPage extends StatelessWidget {
@@ -61,7 +60,16 @@ class CheckoutPage extends StatelessWidget {
                       child: SafeArea(
                         child: Column(
                           children: [
-                            HeadlineTitle(title: "Address", onTap: () {}),
+                            HeadlineTitle(
+                              title: "Address",
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pushNamed(AppRoutes.addAddressRoute)
+                                    .then((value) {
+                                      checkOutcubit.loadCheckoutData();
+                                    });
+                              },
+                            ),
                             SizedBox(height: size.height * 0.006),
                             buildLocationcomponent(
                               context,
