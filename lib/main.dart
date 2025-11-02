@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 
 void main() {
+   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 

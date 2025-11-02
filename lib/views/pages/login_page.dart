@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
@@ -28,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
     passwordController = TextEditingController();
     usernameController = TextEditingController();
     _formKey = GlobalKey<FormState>();
+        FlutterNativeSplash.remove();
+
   }
 
   @override
