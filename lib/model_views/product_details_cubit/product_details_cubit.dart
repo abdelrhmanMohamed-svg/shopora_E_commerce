@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:shopora_e_commerce/model/add_to_cart_model.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
 

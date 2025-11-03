@@ -16,3 +16,23 @@ final class ToggleVisibilty extends AuthState {
 
   ToggleVisibilty({required this.isVisible});
 }
+
+final class AuthLoading extends AuthState {}
+
+final class AuthSuccess extends AuthState {}
+
+final class AuthError extends AuthState {
+  final String message;
+
+  AuthError({required this.message});
+}
+
+final class SignOutLoading extends AuthState {}
+
+final class SiginOutSuccess extends AuthState {}
+
+final class SignOutError extends AuthState {
+  final String message;
+
+  SignOutError({required this.message});
+}

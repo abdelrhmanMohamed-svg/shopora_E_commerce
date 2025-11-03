@@ -5,6 +5,7 @@ import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
+import 'package:shopora_e_commerce/views/widgets/custom_snack_bar.dart';
 import 'package:shopora_e_commerce/views/widgets/social_media_row.dart';
 import 'package:shopora_e_commerce/views/widgets/title_and_textField_component.dart';
 
@@ -29,8 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     passwordController = TextEditingController();
     usernameController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-        FlutterNativeSplash.remove();
-
+    
   }
 
   @override
@@ -153,15 +153,54 @@ class _LoginPageState extends State<LoginPage> {
                             )
                           : SizedBox.shrink(),
                       SizedBox(height: size.height * 0.04),
-                      CustomButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                      BlocConsumer<AuthCubit, AuthState>(
+                        bloc: authCubit,
+                        listenWhen: (previous, current) =>
+                            current is AuthSuccess || current is AuthError,
+                        listener: (context, state) {
+                          if (state is AuthSuccess) {
                             Navigator.of(context).pushNamed(AppRoutes.root);
                           }
+                          if (state is AuthError) {
+                            showCustomSnackBar(
+                              context,
+                              state.message,
+                              isError: true,
+                            );
+                          }
                         },
-                        title: authFormat == AuthFormat.login
-                            ? "Login"
-                            : "Register",
+                        buildWhen: (previous, current) =>
+                            current is AuthLoading ||
+                            current is AuthSuccess ||
+                            current is AuthError,
+                        builder: (context, state) {
+                          if (state is AuthLoading) {
+                            return CustomButton(
+                              child: const CircularProgressIndicator.adaptive(),
+                            );
+                          }
+                          return CustomButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                if (authFormat == AuthFormat.login) {
+                                  await authCubit.signInWithEmailAndPassword(
+                                    emailController.text,
+                                    passwordController.text,
+                                  );
+                                } else {
+                                  await authCubit
+                                      .createUserWithEmailAndPassword(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
+                                }
+                              }
+                            },
+                            title: authFormat == AuthFormat.login
+                                ? "Login"
+                                : "Register",
+                          );
+                        },
                       ),
                       SizedBox(height: size.height * 0.005),
                       Align(
@@ -175,6 +214,9 @@ class _LoginPageState extends State<LoginPage> {
                                 } else {
                                   authCubit.toggleAuth(AuthFormat.register);
                                 }
+                                usernameController.clear();
+                                emailController.clear();
+                                passwordController.clear();
                               },
                               child: Text(
                                 authFormat == AuthFormat.login
@@ -200,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
                             SocialMediaRow(
                               imgUrl:
                                   "https://starfinderfoundation.org/wp-content/uploads/2015/07/Facebook-logo-blue-circle-large-transparent-png.png",
-                              title: "Sign in with Google",
+                              title: "Sign in with Facebook",
                             ),
                           ],
                         ),

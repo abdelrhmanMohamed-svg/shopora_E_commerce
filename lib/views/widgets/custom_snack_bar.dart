@@ -5,11 +5,12 @@ void showCustomSnackBar(
   BuildContext context,
   String message, {
   SnackBarAction? action,
+  bool isError = false,
 }) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: TextStyle(color: Colors.white)),
-      backgroundColor: AppColors.primary,
+      backgroundColor: isError ? AppColors.red : AppColors.primary,
       duration: Duration(seconds: 2),
       action: action,
       behavior: SnackBarBehavior.floating,
