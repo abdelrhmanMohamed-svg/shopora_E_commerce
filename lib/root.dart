@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+import 'package:shopora_e_commerce/model_views/root_cubit/root_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/views/pages/cart_page.dart';
 import 'package:shopora_e_commerce/views/pages/favorite_page.dart';
 import 'package:shopora_e_commerce/views/pages/home_page.dart';
 import 'package:shopora_e_commerce/views/pages/profile_page.dart';
+import 'package:shopora_e_commerce/views/widgets/custom_appbar.dart';
 
 class Root extends StatelessWidget {
   const Root({super.key});
@@ -13,44 +16,16 @@ class Root extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final rootCubit=BlocProvider.of<RootCubit>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.white,
-        scrolledUnderElevation: 0.0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 15.0),
-          child: CircleAvatar(
-            radius: size.height * 0.025,
-            backgroundImage: CachedNetworkImageProvider(
-              "https://cdn4.vectorstock.com/i/1000x1000/82/33/person-gray-photo-placeholder-woman-vector-24138233.jpg",
-            ),
-          ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Hi,Abelrahman",
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
-            ),
-            Text(
-              "Lets's go shopping!",
-              style: Theme.of(
-                context,
-              ).textTheme.titleSmall!.copyWith(color: Colors.grey),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-        ],
-      ),
+      appBar: CustomAppbar(),
       body: PersistentTabView(
+        onTabChanged: (index) {
+          rootCubit.updateSelectedIndex(index);
+          
+        },
+
         stateManagement: false,
         tabs: [
           PersistentTabConfig(

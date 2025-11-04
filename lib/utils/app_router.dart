@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/model_views/location_cubit/loaction_cubit.dart';
 import 'package:shopora_e_commerce/model_views/product_details_cubit/product_details_cubit.dart';
+import 'package:shopora_e_commerce/model_views/root_cubit/root_cubit.dart';
 import 'package:shopora_e_commerce/root.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/pages/add_location_page.dart';
@@ -15,9 +16,7 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.loginRoute:
-        return MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        );
+        return MaterialPageRoute(builder: (context) => const LoginPage());
 
       case AppRoutes.addAddressRoute:
         return MaterialPageRoute(
@@ -51,7 +50,12 @@ class AppRouter {
           ),
         );
       case AppRoutes.root:
-        return MaterialPageRoute(builder: (context) => const Root());
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => RootCubit(),
+            child: const Root(),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (context) => const Scaffold(body: Text("Error")),
