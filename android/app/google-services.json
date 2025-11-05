@@ -12,7 +12,20 @@
           "package_name": "com.example.shopora_e_commerce"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "477674853212-4jc14pl4of37a5b4pfqgqd936cb3ro8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopora_e_commerce",
+            "certificate_hash": "bc9b5e8b301404c66397a73402038a2a1c8a7fe2"
+          }
+        },
+        {
+          "client_id": "477674853212-6dv12q1k15hfem2kv1o2qlliusp79eo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDfuF3B9UToBPQKsmyuNkgXqcq_-QWfA-s"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477674853212-6dv12q1k15hfem2kv1o2qlliusp79eo9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "477674853212-t60lkfcghdum2htjv919lf88e1spqpvb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shoporaECommerce"
+              }
+            }
+          ]
         }
       }
     }

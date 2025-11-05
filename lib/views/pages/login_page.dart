@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
@@ -30,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
     passwordController = TextEditingController();
     usernameController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    
   }
 
   @override
@@ -197,8 +195,8 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             },
                             title: authFormat == AuthFormat.login
-                                ? "Login"
-                                : "Register",
+                                ? "Sign in"
+                                : "Sign up",
                           );
                         },
                       ),
@@ -233,16 +231,56 @@ class _LoginPageState extends State<LoginPage> {
                                   .copyWith(color: AppColors.grey500),
                             ),
                             SizedBox(height: size.height * 0.03),
-                            SocialMediaRow(
-                              imgUrl:
-                                  "https://pluspng.com/img-png/google-logo-png-open-2000.png",
-                              title: "Sign in with Google",
+                            BlocConsumer<AuthCubit, AuthState>(
+                              bloc: authCubit,
+                              listenWhen: (previous, current) =>
+                                  current is GoogleAuthSuccess ||
+                                  current is GoogleAuthError,
+
+                              listener: (context, state) {
+                                if (state is GoogleAuthSuccess) {
+                                  Navigator.of(
+                                    context,
+                                  ).pushNamed(AppRoutes.root);
+                                } else if (state is GoogleAuthError) {
+                                  showCustomSnackBar(
+                                    context,
+                                    state.message,
+                                    isError: true,
+                                  );
+                                }
+                              },
+                              buildWhen: (previous, current) =>
+                                  current is GoogleAuthLoading ||
+                                  current is GoogleAuthError,
+                              builder: (context, state) {
+                                if (state is GoogleAuthLoading) {
+                                  return SocialMediaRow(
+                                    child:
+                                        const CircularProgressIndicator.adaptive(),
+                                  );
+                                }
+
+                                return SocialMediaRow(
+                                  onTap: () async {
+                                    await authCubit.authenticateWithGoogle();
+                                  },
+
+                                  imgUrl:
+                                      "https://pluspng.com/img-png/google-logo-png-open-2000.png",
+                                  title: authFormat == AuthFormat.login
+                                      ? "Sign in with Google"
+                                      : "Sign up with Google",
+                                );
+                              },
                             ),
                             SizedBox(height: size.height * 0.015),
                             SocialMediaRow(
                               imgUrl:
                                   "https://starfinderfoundation.org/wp-content/uploads/2015/07/Facebook-logo-blue-circle-large-transparent-png.png",
-                              title: "Sign in with Facebook",
+                              title: authFormat == AuthFormat.login
+                                  ? "Sign in with Facebook"
+                                  : "Sign up with Facebook",
                             ),
                           ],
                         ),

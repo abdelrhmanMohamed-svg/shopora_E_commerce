@@ -36,3 +36,12 @@ final class SignOutError extends AuthState {
 
   SignOutError({required this.message});
 }
+final class GoogleAuthLoading extends AuthState {}
+
+final class GoogleAuthSuccess extends AuthState {}
+
+final class GoogleAuthError extends AuthState {
+  final String message;
+
+  GoogleAuthError({required this.message});
+}
