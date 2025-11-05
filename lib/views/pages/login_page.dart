@@ -275,12 +275,43 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             SizedBox(height: size.height * 0.015),
-                            SocialMediaRow(
-                              imgUrl:
-                                  "https://starfinderfoundation.org/wp-content/uploads/2015/07/Facebook-logo-blue-circle-large-transparent-png.png",
-                              title: authFormat == AuthFormat.login
-                                  ? "Sign in with Facebook"
-                                  : "Sign up with Facebook",
+                            BlocConsumer<AuthCubit, AuthState>(
+                              bloc: authCubit,
+                              listenWhen: (previous, current) =>
+                                  current is FacebookAuthSuccess ||
+                                  current is FacebookAuthError,
+                              listener: (context, state) {
+                                if (state is FacebookAuthSuccess) {
+                                  Navigator.of(
+                                    context,
+                                  ).pushNamed(AppRoutes.root);
+                                } else if (state is FacebookAuthError) {
+                                  showCustomSnackBar(
+                                    context,
+                                    state.message,
+                                    isError: true,
+                                  );
+                                }
+
+                              },
+                              buildWhen: (previous, current) =>
+                                  current is FacebookAuthLoading ||
+                                  current is FacebookAuthError,
+                              builder: (context, state) {
+                                if(state is FacebookAuthLoading){
+                                   return SocialMediaRow(
+                                 child: const CircularProgressIndicator.adaptive(),
+                                );
+                                }
+                                return SocialMediaRow(
+                                  onTap: () async=>await authCubit.authenticateWithFacebook(),
+                                  imgUrl:
+                                      "https://starfinderfoundation.org/wp-content/uploads/2015/07/Facebook-logo-blue-circle-large-transparent-png.png",
+                                  title: authFormat == AuthFormat.login
+                                      ? "Sign in with Facebook"
+                                      : "Sign up with Facebook",
+                                );
+                              },
                             ),
                           ],
                         ),
