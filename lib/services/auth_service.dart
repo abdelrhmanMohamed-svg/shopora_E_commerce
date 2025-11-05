@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthService {
@@ -7,11 +8,13 @@ abstract class AuthService {
   Future<void> signOut();
   User? getCuurentUser();
   Future<bool> authenticateWithGoogle();
+  Future<bool> authenticateWithFacebook();
 }
 
 class AuthServiceImpl implements AuthService {
   final _fireBaseAuth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn.instance;
+  final _facebookSignIn = FacebookAuth.instance;
   List<String> scopes = <String>[
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
@@ -55,44 +58,64 @@ class AuthServiceImpl implements AuthService {
 
   @override
   Future<void> signOut() async {
-    await _fireBaseAuth.signOut();
+    await _facebookSignIn.logOut();
     await _googleSignIn.signOut();
+    await _fireBaseAuth.signOut();
   }
 
   @override
   Future<bool> authenticateWithGoogle() async {
-  // Initialize the Google Sign-In instance before using it
-  await _googleSignIn.initialize(); 
+    // Initialize the Google Sign-In instance before using it
+    await _googleSignIn.initialize();
 
-  // Start the Google authentication process, requesting permission to access the user's email
-  final GoogleSignInAccount account = await _googleSignIn.authenticate(
-    scopeHint: ['email'],
-  );
+    // Start the Google authentication process, requesting permission to access the user's email
+    final GoogleSignInAccount account = await _googleSignIn.authenticate(
+      scopeHint: ['email'],
+    );
 
-  // Retrieve (tokens) from the signed-in Google account
-  final gAuth = account.authentication;
+    // Retrieve (tokens) from the signed-in Google account
+    final gAuth = account.authentication;
 
-  // Get the authorization client used for managing OAuth scopes and tokens
-  final authClient = _googleSignIn.authorizationClient;
+    // Get the authorization client used for managing OAuth scopes and tokens
+    final authClient = _googleSignIn.authorizationClient;
 
-  // Request authorization for specific scopes (in this case, access to the user's email)
-  final authorization = await authClient.authorizationForScopes(['email']);
+    // Request authorization for specific scopes (in this case, access to the user's email)
+    final authorization = await authClient.authorizationForScopes(['email']);
 
-  // Create a Firebase credential using the Google access token and ID token
-  final credential = GoogleAuthProvider.credential(
-    accessToken: authorization?.accessToken,
-    idToken: gAuth.idToken,
-  );
+    // Create a Firebase credential using the Google access token and ID token
+    final credential = GoogleAuthProvider.credential(
+      accessToken: authorization?.accessToken,
+      idToken: gAuth.idToken,
+    );
 
-  // Use the created credential to sign in to Firebase Authentication
-  final userCredential = await _fireBaseAuth.signInWithCredential(credential);
+    // Use the created credential to sign in to Firebase Authentication
+    final userCredential = await _fireBaseAuth.signInWithCredential(credential);
 
-  // Check if the sign-in was successful (user is not null)
-  if (userCredential.user != null) {
-    return true; // Successfully signed in
-  } else {
-    return false; // Sign-in failed
+    // Check if the sign-in was successful (user is not null)
+    if (userCredential.user != null) {
+      return true; // Successfully signed in
+    } else {
+      return false; // Sign-in failed
+    }
   }
-}
 
+  @override
+  Future<bool> authenticateWithFacebook() async {
+    final loginResult = await _facebookSignIn.login();
+    if (loginResult.status == LoginStatus.failed) {
+      return false;
+    }
+    final accessToken = loginResult.accessToken;
+    if (accessToken == null) {
+      return false;
+    }
+    final credential = FacebookAuthProvider.credential(accessToken.tokenString);
+    final userCredential = await _fireBaseAuth.signInWithCredential(credential);
+
+    if (userCredential.user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
