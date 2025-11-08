@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:shopora_e_commerce/model/home_carosel_item_model.dart';
-import 'package:shopora_e_commerce/model/product_item_model.dart';
 import 'package:shopora_e_commerce/model_views/home_cubit/home_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/grid_item.dart';
@@ -21,7 +20,7 @@ class HomeTabView extends StatelessWidget {
         if (state is HomeLoading) {
           return Center(child: CircularProgressIndicator.adaptive());
         } else if (state is HomeLoaded) {
-          final carouselItems = state.carouselItems;
+          final carouselItems = state.announcements;
           final products = state.products;
           return SingleChildScrollView(
             child: Column(
