@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopora_e_commerce/model_views/category_cubit/category_cubit.dart';
 import 'package:shopora_e_commerce/model_views/home_cubit/home_cubit.dart';
 
 import 'package:shopora_e_commerce/utils/app_colors.dart';
@@ -25,12 +26,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final homeCubit = HomeCubit();
-        homeCubit.loadHomeData();
-        return homeCubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final homeCubit = HomeCubit();
+            homeCubit.loadHomeData();
+            return homeCubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final categoryCubit = CategoryCubit();
+            categoryCubit.fetchCategories();
+
+            return categoryCubit;
+          },
+        ),
+      ],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         child: Column(

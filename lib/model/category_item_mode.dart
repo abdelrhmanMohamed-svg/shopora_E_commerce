@@ -10,6 +10,24 @@ class CategoryItemModel {
     required this.imgUrl,
     required this.productsCount,
   });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'imgUrl': imgUrl,
+      'productsCount': productsCount,
+    };
+  }
+
+  factory CategoryItemModel.fromMap(Map<String, dynamic> map) {
+    return CategoryItemModel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      imgUrl: map['imgUrl'] as String,
+      productsCount: map['productsCount'] as int,
+    );
+  }
 }
 
 List<CategoryItemModel> dummyCategories = [

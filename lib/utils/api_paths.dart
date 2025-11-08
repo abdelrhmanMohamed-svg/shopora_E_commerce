@@ -5,6 +5,8 @@ class ApiPaths {
   static String product(String productId) => 'products/$productId';
 
   static String announcements() => 'announcement/';
+  static String category() => 'category/';
+
 
   
 

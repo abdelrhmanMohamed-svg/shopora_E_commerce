@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shopora_e_commerce/model/category_item_mode.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.itemIndex});
-  final int itemIndex;
+  const CategoryItem({super.key, required this.category});
+  final CategoryItemModel category;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,7 @@ class CategoryItem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
               image: DecorationImage(
-                image: CachedNetworkImageProvider(
-                  dummyCategories[itemIndex].imgUrl,
-                ),
+                image: CachedNetworkImageProvider(category.imgUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -32,18 +30,18 @@ class CategoryItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    dummyCategories[itemIndex].name,
+                    category.name,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 5.0),
                   Text(
-                    "${dummyCategories[itemIndex].productsCount} products",
+                    "${category.productsCount} products",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
-                  ),
+                  ),  
                 ],
               ),
             ),
