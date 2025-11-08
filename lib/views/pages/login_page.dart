@@ -190,6 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                                       .createUserWithEmailAndPassword(
                                         emailController.text,
                                         passwordController.text,
+                                        usernameController.text
                                       );
                                 }
                               }

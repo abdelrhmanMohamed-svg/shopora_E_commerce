@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model/add_to_cart_model.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
+import 'package:shopora_e_commerce/services/auth_service.dart';
+import 'package:shopora_e_commerce/services/product_details_services.dart';
 
 part 'product_details_state.dart';
 
@@ -10,17 +12,28 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   int quantity = 1;
   ProductSize? size;
-
-  void loadProductDetails(String productId) {
+  final _productDetailsServices = ProductDetailsServicesImpl();
+  final _authServices = AuthServiceImpl();
+  Future<void> fetchProductDetails(String productId) async {
     emit(ProductDetailsLoading());
-    final selectedIndex = dummyProducts.indexWhere(
-      (item) => item.id == productId,
-    );
-    if (selectedIndex != -1) {
-      emit(ProductDetailsLoaded(dummyProducts[selectedIndex]));
-    } else {
+
+    try {
+      final product = await _productDetailsServices.fetchProductDetails(
+        productId,
+      );
+      emit(ProductDetailsLoaded(product));
+    } catch (e) {
       emit(ProductDetailsError("Product not found"));
     }
+
+    // final selectedIndex = dummyProducts.indexWhere(
+    //   (item) => item.id == productId,
+    // );
+    // if (selectedIndex != -1) {
+    //   emit(ProductDetailsLoaded(dummyProducts[selectedIndex]));
+    // } else {
+    //   emit(ProductDetailsError("Product not found"));
+    // }
   }
 
   void incrementCounter(String productId) {
@@ -53,18 +66,36 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(SizeSelected(size: size));
   }
 
-  void addToCart(String productId) {
+  Future<void> addToCart(String productId) async {
     emit(AddingToCart());
-    Future.delayed(Duration(seconds: 2), () {
+    try {
+      final product = await _productDetailsServices.fetchProductDetails(
+        productId,
+      );
+      final cuurentUser = _authServices.getCuurentUser();
       final newItem = AddToCartModel(
-        product: dummyProducts.firstWhere((item) => item.id == productId),
+        product: product,
         productId: productId,
         quantity: quantity,
         size: size!,
       );
-      dummyCartItems.add(newItem);
-      debugPrint(dummyCartItems.length.toString());
+      await _productDetailsServices.addToCart(newItem, cuurentUser!.uid);
       emit(CartAdded(productId));
-    });
+    } catch (e) {
+      emit(AddToCartError(e.toString()));
+    }
+
+    // Future.delayed(Duration(seconds: 2), () {
+    //   final newItem = AddToCartModel(
+    //     product: dummyProducts.firstWhere((item) => item.id == productId),
+    //     productId: productId,
+    //     quantity: quantity,
+    //     size: size!,
+    //   );
+    //   dummyCartItems.add(newItem);
+    //   debugPrint(dummyCartItems.length.toString());
+    //   emit(CartAdded(productId));
+    // }
+    // );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:shopora_e_commerce/model/user_data_model.dart';
 import 'package:shopora_e_commerce/services/auth_service.dart';
+import 'package:shopora_e_commerce/services/firestore_services.dart';
+import 'package:shopora_e_commerce/utils/api_paths.dart';
 
 part 'auth_state.dart';
 
@@ -10,6 +13,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   final AuthService authService = AuthServiceImpl();
+  final fireStoreService = FirestoreServices.instance;
 
   void toggleAuth(AuthFormat authFormat) {
     emit(
@@ -45,6 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> createUserWithEmailAndPassword(
     String email,
     String password,
+    String username,
   ) async {
     emit(AuthLoading());
     try {
@@ -53,6 +58,7 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
       if (result) {
+        await _setUserData(email, username);
         emit(AuthSuccess());
       } else {
         emit(AuthError(message: "Failed to create account"));
@@ -84,6 +90,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final result = await authService.authenticateWithGoogle();
       if (result) {
+        final user = authService.getCuurentUser();
+        if (user != null) {
+          // Use display name from Google, or a default if it's null
+          await _setUserData(user.email ?? '', user.displayName ?? 'New User');
+        }
         emit(GoogleAuthSuccess());
       } else {
         emit(GoogleAuthError(message: "Failed to sign in"));
@@ -97,14 +108,33 @@ class AuthCubit extends Cubit<AuthState> {
     emit(FacebookAuthLoading());
     try {
       final result = await authService.authenticateWithFacebook();
-      if(result){
+      if (result) {
+        final user = authService.getCuurentUser();
+        if (user != null) {
+          // Use display name from Facebook, or a default if it's null
+          await _setUserData(user.email ?? '', user.displayName ?? 'New User');
+        }
         emit(FacebookAuthSuccess());
-      }else{
+      } else {
         emit(FacebookAuthError(message: "Failed to sign in"));
       }
-      }
-      catch(e){
-        emit(FacebookAuthError(message: e.toString()));
-      }
+    } catch (e) {
+      emit(FacebookAuthError(message: e.toString()));
+    }
+  }
+
+  Future<void> _setUserData(String email, String username) async {
+    final uid = authService.getCuurentUser()!.uid;
+    final userdata = UserDataModel(
+      uid: uid,
+      email: email,
+      username: username,
+      createdDate: DateTime.now().toIso8601String(),
+    );
+
+    await fireStoreService.setData(
+      path: ApiPaths.user(uid),
+      data: userdata.toMap(),
+    );
   }
 }

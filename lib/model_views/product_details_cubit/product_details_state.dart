@@ -40,3 +40,10 @@ final class CartAdded extends ProductDetailsState {
 
   CartAdded(this.productId);
 }
+final class AddToCartError extends ProductDetailsState {
+  final String message;
+
+  AddToCartError(this.message);
+
+
+}

@@ -14,12 +14,15 @@ class HomeTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
     return BlocBuilder<HomeCubit, HomeState>(
-      bloc: BlocProvider.of<HomeCubit>(context),
+      bloc: homeCubit,
       builder: (context, state) {
         if (state is HomeLoading) {
           return Center(child: CircularProgressIndicator.adaptive());
         } else if (state is HomeLoaded) {
+          final carouselItems = state.carouselItems;
+          final products = state.products;
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -32,11 +35,11 @@ class HomeTabView extends StatelessWidget {
                     showIndicator: true,
                     slideIndicator: CircularWaveSlideIndicator(),
                   ),
-                  itemCount: state.carouselItems.length,
+                  itemCount: carouselItems.length,
                   itemBuilder:
                       (BuildContext context, int itemIndex, int pageViewIndex) {
                         final HomeCarouselItemModel banner =
-                            state.carouselItems[itemIndex];
+                            carouselItems[itemIndex];
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
                           child: CachedNetworkImage(
@@ -79,14 +82,14 @@ class HomeTabView extends StatelessWidget {
                   ),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: dummyProducts.length,
+                  itemCount: products.length,
                   itemBuilder: (context, index) => InkWell(
                     onTap: () =>
                         Navigator.of(context, rootNavigator: true).pushNamed(
                           AppRoutes.productDetailsRoute,
-                          arguments: dummyProducts[index].id,
+                          arguments: products[index].id,
                         ),
-                    child: GridItem(productItem: state.products[index]),
+                    child: GridItem(productItem: products[index]),
                   ),
                 ),
               ],
