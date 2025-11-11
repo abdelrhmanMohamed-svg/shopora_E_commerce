@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shopora_e_commerce/firebase_options.dart';
 import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
+import 'package:shopora_e_commerce/model_views/favorites_cubit/favorites_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
@@ -24,13 +25,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
-    return BlocProvider(
-      create: (context) {
-        
-        final authCubit = AuthCubit();
-        authCubit.authCheck();
-        return authCubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final authCubit = AuthCubit();
+            authCubit.authCheck();
+            return authCubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final favoritesCubit = FavoritesCubit();
+            favoritesCubit.fetchFavorites();
+            return favoritesCubit;
+          },
+        ),
+      ],
       child: Builder(
         builder: (context) {
           final authCubit = BlocProvider.of<AuthCubit>(context);
@@ -55,7 +66,9 @@ class MyApp extends StatelessWidget {
                     seedColor: Colors.deepPurple,
                   ),
                 ),
-                initialRoute: state is AuthSuccess? AppRoutes.root : AppRoutes.loginRoute,
+                initialRoute: state is AuthSuccess
+                    ? AppRoutes.root
+                    : AppRoutes.loginRoute,
                 onGenerateRoute: AppRouter.onGenerateRoute,
               );
             },

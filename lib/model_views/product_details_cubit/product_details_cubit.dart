@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model/add_to_cart_model.dart';
 import 'package:shopora_e_commerce/model/product_item_model.dart';
 import 'package:shopora_e_commerce/services/auth_service.dart';
+import 'package:shopora_e_commerce/services/favorites_services.dart';
 import 'package:shopora_e_commerce/services/product_details_services.dart';
 
 part 'product_details_state.dart';
@@ -14,14 +15,25 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductSize? size;
   final _productDetailsServices = ProductDetailsServicesImpl();
   final _authServices = AuthServiceImpl();
+  final _favoriteServices = FavoritesServiceImple();
+
   Future<void> fetchProductDetails(String productId) async {
     emit(ProductDetailsLoading());
 
     try {
+      final currentUser = _authServices.getCuurentUser();
+
+      final favorites = await _favoriteServices.getFavoriteProducts(
+        currentUser!.uid,
+      );
+
       final product = await _productDetailsServices.fetchProductDetails(
         productId,
       );
-      emit(ProductDetailsLoaded(product));
+      final isFavorite = favorites.any((element) => element.id == productId);
+      final finalProduct = product.copyWith(isFavorite: isFavorite);
+
+      emit(ProductDetailsLoaded(finalProduct));
     } catch (e) {
       emit(ProductDetailsError("Product not found"));
     }
@@ -97,5 +109,27 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     //   emit(CartAdded(productId));
     // }
     // );
+  }
+
+  Future<void> setFavorites(ProductItemModel product) async {
+    emit(FavoritesLoading());
+    try {
+      final cuurentUser = _authServices.getCuurentUser();
+      final favorites = await _favoriteServices.getFavoriteProducts(
+        cuurentUser!.uid,
+      );
+      final isFavorite = favorites.any((item) => item.id == product.id);
+      if (isFavorite) {
+        await _favoriteServices.removeProductFromFavorites(
+          product.id,
+          cuurentUser.uid,
+        );
+      } else {
+        await _favoriteServices.addProductToFavorites(product, cuurentUser.uid);
+      }
+      emit(FvaoritesLoaded(!isFavorite));
+    } catch (e) {
+      emit(FavoritesError(e.toString()));
+    }
   }
 }

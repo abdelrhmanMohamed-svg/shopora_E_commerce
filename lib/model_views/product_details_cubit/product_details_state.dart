@@ -31,19 +31,33 @@ final class SizeSelected extends ProductDetailsState {
   SizeSelected({required this.size});
 }
 
-final class AddingToCart extends ProductDetailsState {
-
-}
+final class AddingToCart extends ProductDetailsState {}
 
 final class CartAdded extends ProductDetailsState {
   final String productId;
 
   CartAdded(this.productId);
 }
+
 final class AddToCartError extends ProductDetailsState {
   final String message;
 
   AddToCartError(this.message);
+}
 
+final class FavoritesLoading extends ProductDetailsState {
 
+  FavoritesLoading();
+}
+
+final class FvaoritesLoaded extends ProductDetailsState {
+  final bool isFavorite;
+
+  FvaoritesLoaded(this.isFavorite);
+}
+
+final class FavoritesError extends ProductDetailsState {
+  final String message;
+
+  FavoritesError(this.message);
 }

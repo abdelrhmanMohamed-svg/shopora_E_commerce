@@ -14,9 +14,10 @@ class ProductDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final productDetailsCubit = BlocProvider.of<ProductDetailsCubit>(context);
 
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-      bloc: BlocProvider.of<ProductDetailsCubit>(context),
+      bloc: productDetailsCubit,
       buildWhen: (previous, current) =>
           current is ProductDetailsLoaded ||
           current is ProductDetailsError ||
@@ -44,9 +45,39 @@ class ProductDetailsPage extends StatelessWidget {
                   title: Text("Product Details"),
                   centerTitle: true,
                   actions: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border),
+                    BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+                      bloc: productDetailsCubit,
+                      buildWhen: (previous, current) =>
+                          current is FvaoritesLoaded ||
+                          current is ProductDetailsLoaded ||
+                          current is FavoritesLoading,
+                      builder: (context, state) {
+                        if (state is FavoritesLoading) {
+                          return Center(
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
+                          );
+                        } else if (state is FvaoritesLoaded) {
+                          final isFavorite = state.isFavorite;
+                          return InkWell(
+                            onTap: () async => await productDetailsCubit
+                                .setFavorites(selectedItem),
+                            child: isFavorite
+                                ? Icon(Icons.favorite, color: AppColors.red)
+                                : Icon(Icons.favorite_border_outlined),
+                          );
+                        }
+
+                        return InkWell(
+                          onTap: () async => await productDetailsCubit
+                              .setFavorites(selectedItem),
+                          child: selectedItem.isFavorite
+                              ? Icon(Icons.favorite, color: AppColors.red)
+                              : Icon(Icons.favorite_border_outlined),
+                        );
+                      },
                     ),
                   ],
                   expandedHeight: size.height * 0.55,
@@ -181,7 +212,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
               ],
             ),
-            bottomNavigationBar: AddToCartRowWidget(selectedItem: selectedItem)
+            bottomNavigationBar: AddToCartRowWidget(selectedItem: selectedItem),
           );
         } else {
           return Scaffold(body: Center(child: Text("something went wrong")));
