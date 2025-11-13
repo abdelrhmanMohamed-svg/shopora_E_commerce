@@ -16,7 +16,7 @@ final class LoactionsLoaded extends LoactionState {
 final class LoactionError extends LoactionState {
   final String message;
 
-  LoactionError({required this.message});
+  LoactionError(this.message);
 }
 
 final class LocationAdding extends LoactionState {}
@@ -26,7 +26,7 @@ final class LoactionAdded extends LoactionState {}
 final class LocationErrorAdding extends LoactionState {
   final String message;
 
-  LocationErrorAdding({required this.message});
+  LocationErrorAdding(this.message);
 }
 
 final class ChosenLocation extends LoactionState {
@@ -46,5 +46,5 @@ final class ConfirmLocationSuccess extends LoactionState {
 final class ConfirmLocationError extends LoactionState {
   final String message;
 
-  ConfirmLocationError({required this.message});
+  ConfirmLocationError(this.message);
 }

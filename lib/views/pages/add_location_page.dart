@@ -72,7 +72,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
                       size: size.height * 0.035,
                     ),
 
-                    hintText: "Enter location like city-country",
+                    hintText: "Enter location like city,country",
                     hintStyle: Theme.of(
                       context,
                     ).textTheme.titleMedium!.copyWith(color: AppColors.black45),
@@ -136,54 +136,57 @@ class _AddLocationPageState extends State<AddLocationPage> {
                       return Center(child: Text(state.message));
                     } else if (state is LoactionsLoaded) {
                       final locations = state.locations;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: locations.length,
+                      return Column(
+                        children: [
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: locations.length,
 
-                        itemBuilder: (context, index) {
-                          final location = locations[index];
-                          return LocationItem(location: location);
-                        },
+                            itemBuilder: (context, index) {
+                              final location = locations[index];
+                              return LocationItem(location: location);
+                            },
+                          ),
+                          BlocConsumer<LoactionCubit, LoactionState>(
+                            listenWhen: (previous, current) =>
+                                current is ConfirmLocationSuccess,
+                            listener: (context, state) {
+                              if (state is ConfirmLocationSuccess) {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            bloc: locationCubit,
+                            buildWhen: (previous, current) =>
+                                current is ConfirmLocationLoading ||
+                                current is ConfirmLocationSuccess ||
+                                current is ConfirmLocationError,
+                            builder: (context, state) {
+                              if (state is ConfirmLocationLoading) {
+                                return CustomButton(
+                                  onPressed: null,
+                                  child:
+                                      const CircularProgressIndicator.adaptive(),
+                                );
+                              } else {
+                                return CustomButton(
+                                  onPressed: () {
+                                    locationCubit.confirmLocation();
+                                  },
+                                  title: "Confirm",
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       );
                     } else {
                       return Center(child: Text("something went wrong"));
                     }
                   },
                 ),
-                SizedBox(height: size.height * 0.02),
-
-                BlocConsumer<LoactionCubit, LoactionState>(
-                  listenWhen: (previous, current) =>
-                      current is ConfirmLocationSuccess,
-                  listener: (context, state) {
-                    if (state is ConfirmLocationSuccess) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  bloc: locationCubit,
-                  buildWhen: (previous, current) =>
-                      current is ConfirmLocationLoading ||
-                      current is ConfirmLocationSuccess ||
-                      current is ConfirmLocationError,
-                  builder: (context, state) {
-                    if (state is ConfirmLocationLoading) {
-                      return CustomButton(
-                        onPressed: null,
-                        child: const CircularProgressIndicator.adaptive(),
-                      );
-                    } else {
-                      return CustomButton(
-                        onPressed: () {
-                          locationCubit.confirmLocation();
-                        },
-                        title: "Confirm",
-                      );
-                    }
-                  },
-                ),
-                SizedBox(height: size.height * 0.02),
+               
               ],
             ),
           ),
