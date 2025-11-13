@@ -17,7 +17,7 @@ final class CartLoaded extends CartState {
 final class CartError extends CartState {
   final String message;
 
-  CartError({required this.message});
+  CartError(this.message);
 }
 
 final class CounterUpdated extends CartState {
@@ -26,6 +26,15 @@ final class CounterUpdated extends CartState {
 
   CounterUpdated({required this.value, required this.productId});
 }
+
+final class CounterLoading extends CartState {}
+
+final class CounterError extends CartState {
+  final String message;
+
+  CounterError(this.message);
+}
+
 final class UpdateSubTotal extends CartState {
   final double subtotal;
 

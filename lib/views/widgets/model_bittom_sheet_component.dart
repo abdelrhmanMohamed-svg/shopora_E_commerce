@@ -65,10 +65,12 @@ class ModelBittomSheetComponent extends StatelessWidget {
                 SizedBox(height: size.height * 0.01),
 
                 InkWell(
-                  onTap: () => Navigator.of(
-                    context,
-                    rootNavigator: true,
-                  ).pushNamed(AppRoutes.addCardRoute),
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(
+                        AppRoutes.addCardRoute,
+                        arguments: paymentCubit,
+                      )
+                      .then((value) => paymentCubit.fetchCards()),
                   child: Card(
                     elevation: 1.5,
                     color: AppColors.white,

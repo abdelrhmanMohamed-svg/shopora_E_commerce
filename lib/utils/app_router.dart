@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model_views/location_cubit/loaction_cubit.dart';
+import 'package:shopora_e_commerce/model_views/payment_cubit/payment_cubit.dart';
 import 'package:shopora_e_commerce/model_views/product_details_cubit/product_details_cubit.dart';
 import 'package:shopora_e_commerce/model_views/root_cubit/root_cubit.dart';
 import 'package:shopora_e_commerce/root.dart';
@@ -30,7 +31,13 @@ class AppRouter {
         );
 
       case AppRoutes.addCardRoute:
-        return MaterialPageRoute(builder: (context) => const AddCardPage());
+        final paymentCubit = settings.arguments as PaymentCubit;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: paymentCubit,
+            child: const AddCardPage(),
+          ),
+        );
 
       case AppRoutes.checkoutRoute:
         return MaterialPageRoute(builder: (context) => const CheckoutPage());

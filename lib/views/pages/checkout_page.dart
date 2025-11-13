@@ -20,12 +20,23 @@ class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return BlocProvider(
-      create: (context) {
-        final checkoutCubit = CheckoutCubit();
-        checkoutCubit.loadCheckoutData();
-        return checkoutCubit;
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final checkoutCubit = CheckoutCubit();
+            checkoutCubit.loadCheckoutData();
+            return checkoutCubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final paymentCubit = PaymentCubit();
+            paymentCubit.fetchCards();
+            return paymentCubit;
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -37,6 +48,8 @@ class CheckoutPage extends StatelessWidget {
         body: Builder(
           builder: (context) {
             final checkOutcubit = BlocProvider.of<CheckoutCubit>(context);
+            final paymentCubit = BlocProvider.of<PaymentCubit>(context);
+
             return BlocBuilder<CheckoutCubit, CheckoutState>(
               bloc: checkOutcubit,
               buildWhen: (previous, current) =>
