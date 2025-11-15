@@ -57,8 +57,14 @@ class AppRouter {
         );
       case AppRoutes.root:
         return MaterialPageRoute(
+          
           builder: (context) => BlocProvider(
-            create: (context) => RootCubit(),
+            create: (context) {
+              final rootCubit=RootCubit();
+              rootCubit.updateSelectedIndex(0);
+
+              return rootCubit;
+            },
             child: const Root(),
           ),
         );

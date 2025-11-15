@@ -1,17 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dash/flutter_dash.dart';
 import 'package:shopora_e_commerce/model/location_item_model.dart';
 import 'package:shopora_e_commerce/model/new_card_model.dart';
 import 'package:shopora_e_commerce/model_views/checkout/checkout_cubit.dart';
 import 'package:shopora_e_commerce/model_views/payment_cubit/payment_cubit.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
+import 'package:shopora_e_commerce/views/pages/cart_page.dart';
 import 'package:shopora_e_commerce/views/widgets/custom_button.dart';
+import 'package:shopora_e_commerce/views/widgets/custom_snack_bar.dart';
 import 'package:shopora_e_commerce/views/widgets/default_location.dart';
 import 'package:shopora_e_commerce/views/widgets/epmty_payment_address.dart';
 import 'package:shopora_e_commerce/views/widgets/headline_title.dart';
 import 'package:shopora_e_commerce/views/widgets/model_bittom_sheet_component.dart';
+import 'package:shopora_e_commerce/views/widgets/order_bottomSheet.dart';
 import 'package:shopora_e_commerce/views/widgets/payment_card_item.dart';
 
 class CheckoutPage extends StatelessWidget {
@@ -195,31 +199,65 @@ class CheckoutPage extends StatelessWidget {
                             buildPaymentComponent(context, state.selectedCard),
 
                             SizedBox(height: size.height * 0.03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
                               children: [
-                                Text(
-                                  "Total Amount:",
-                                  style: Theme.of(context).textTheme.titleLarge!
-                                      .copyWith(
-                                        color: AppColors.black45,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                totalAndSubtoal(
+                                  context,
+                                  title: "Subtotal",
+                                  value: state.subtotal,
                                 ),
-                                Text(
-                                  "\$${state.totalAmount}",
-                                  style: Theme.of(context).textTheme.titleLarge!
-                                      .copyWith(
-                                        color: AppColors.black,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                totalAndSubtoal(
+                                  context,
+                                  title: "Shipping",
+                                  value: state.shippingAmount,
                                 ),
+                                Dash(
+                                  dashColor: AppColors.gery,
+                                  direction: Axis.horizontal,
+                                  length: size.width * 0.9,
+                                ),
+                                totalAndSubtoal(
+                                  context,
+                                  title: "Total Amount",
+                                  value: state.totalAmount,
+                                ),
+                                SizedBox(height: size.height * 0.02),
                               ],
                             ),
-                            SizedBox(height: size.height * 0.03),
-                            CustomButton(
-                              onPressed: () {},
-                              title: "Proceed to pay",
+                            BlocConsumer<CheckoutCubit, CheckoutState>(
+                              bloc: checkOutcubit,
+                              listenWhen: (previous, current) =>
+                                  current is PlacedOrderError ||
+                                  current is PlacedOrder,
+                              listener: (context, state) {
+                                if (state is PlacedOrder) {
+                                  finishOrderBottomSheet(context);
+                                } else if (state is PlacedOrderError) {
+                                  showCustomSnackBar(
+                                    context,
+                                    "Something went wrong",
+                                    isError: true,
+                                  );
+                                }
+                              },
+                              buildWhen: (previous, current) =>
+                                  current is PlacedOrder ||
+                                  current is PlacingOrder ||
+                                  current is PlacedOrderError,
+
+                              builder: (context, state) {
+                                if (state is PlacingOrder) {
+                                  return CustomButton(
+                                    child:
+                                        const CircularProgressIndicator.adaptive(),
+                                  );
+                                }
+                                return CustomButton(
+                                  onPressed: () async =>
+                                      await checkOutcubit.placeOrder(),
+                                  title: "Proceed to pay",
+                                );
+                              },
                             ),
                             SizedBox(height: size.height * 0.04),
                           ],
@@ -259,6 +297,26 @@ class CheckoutPage extends StatelessWidget {
     ).then((value) {
       BlocProvider.of<CheckoutCubit>(context).loadCheckoutData();
     });
+  }
+
+  void finishOrderBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      backgroundColor: AppColors.white,
+      useSafeArea: true,
+      clipBehavior: Clip.hardEdge,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return BlocProvider(
+          create: (context) {
+            return CheckoutCubit();
+          },
+          child: OrderBottomsheet(),
+        );
+      },
+    );
   }
 
   Widget buildLocationcomponent(

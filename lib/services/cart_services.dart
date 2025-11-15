@@ -5,6 +5,7 @@ import 'package:shopora_e_commerce/utils/api_paths.dart';
 abstract class CartServices {
   Future<List<AddToCartModel>> fetchCartItems(String userId);
   Future<void> setCartItem(String userId, AddToCartModel cartItem);
+  Future<void> deleteCartItem(String userId, String productId);
 }
 
 class CartServicesImpl implements CartServices {
@@ -21,5 +22,11 @@ class CartServicesImpl implements CartServices {
       await _fireStoreServices.setData(
         path: ApiPaths.cartItem(userId, cartItem.productId),
         data: cartItem.toMap(),
+      );
+
+  @override
+  Future<void> deleteCartItem(String userId, String productId) async =>
+      await _fireStoreServices.deleteData(
+        path: ApiPaths.cartItem(userId, productId),
       );
 }

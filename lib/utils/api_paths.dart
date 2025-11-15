@@ -17,5 +17,6 @@ class ApiPaths {
   static String locations(String uid) => 'users/$uid/locations/';
   static String location(String uid, String locationId) =>
       'users/$uid/locations/$locationId';
-
+  static String order(String uid, String orderId) =>
+      'users/$uid/orders/$orderId';
 }
