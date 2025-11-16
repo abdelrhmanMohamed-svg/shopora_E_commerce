@@ -12,3 +12,5 @@ final class UpdateSelcetedIndex extends RootState {
 
   const UpdateSelcetedIndex({required this.index});
 }
+
+

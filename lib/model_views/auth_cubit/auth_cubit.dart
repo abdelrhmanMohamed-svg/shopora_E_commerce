@@ -71,6 +71,7 @@ class AuthCubit extends Cubit<AuthState> {
   void authCheck() {
     final user = authService.getCuurentUser();
     if (user != null) {
+      fetchUser();
       emit(AuthSuccess());
     }
   }
@@ -92,7 +93,6 @@ class AuthCubit extends Cubit<AuthState> {
       if (result) {
         final user = authService.getCuurentUser();
         if (user != null) {
-          // Use display name from Google, or a default if it's null
           await _setUserData(user.email ?? '', user.displayName ?? 'New User');
         }
         emit(GoogleAuthSuccess());
@@ -111,7 +111,6 @@ class AuthCubit extends Cubit<AuthState> {
       if (result) {
         final user = authService.getCuurentUser();
         if (user != null) {
-          // Use display name from Facebook, or a default if it's null
           await _setUserData(user.email ?? '', user.displayName ?? 'New User');
         }
         emit(FacebookAuthSuccess());
@@ -136,5 +135,21 @@ class AuthCubit extends Cubit<AuthState> {
       path: ApiPaths.user(uid),
       data: userdata.toMap(),
     );
+  }
+
+  Future<void> fetchUser() async {
+    emit(FecthUserLoading());
+    try {
+      final user = authService.getCuurentUser();
+      if (user != null) {
+        final userData = await authService.fetchUserData(user.uid);
+        emit(AuthSuccess());
+        emit(FetchUser(userData));
+      } else {
+        emit(FetchUserError("User not found"));
+      }
+    } catch (e) {
+      emit(FetchUserError(e.toString()));
+    }
   }
 }

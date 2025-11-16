@@ -15,7 +15,6 @@ class Root extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final rootCubit=BlocProvider.of<RootCubit>(context);
 
     return Scaffold(

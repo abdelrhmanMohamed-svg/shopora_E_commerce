@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/model_views/root_cubit/root_cubit.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -11,6 +12,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     final Size size = MediaQuery.of(context).size;
     int selectedIndex = 0;
     final rootCubit = BlocProvider.of<RootCubit>(context);
+    final authCubit = BlocProvider.of<AuthCubit>(context);
     return BlocBuilder<RootCubit, RootState>(
       buildWhen: (previous, current) => current is UpdateSelcetedIndex,
       bloc: rootCubit,
@@ -20,37 +22,92 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           selectedIndex = state.index;
         }
         if (selectedIndex == 0) {
-          return AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: CircleAvatar(
-                radius: size.height * 0.025,
-                backgroundImage: CachedNetworkImageProvider(
-                  "https://cdn4.vectorstock.com/i/1000x1000/82/33/person-gray-photo-placeholder-woman-vector-24138233.jpg",
-                ),
-              ),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Hi,Abelrahman",
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
+          return BlocBuilder<AuthCubit, AuthState>(
+            bloc: authCubit,
+            buildWhen: (previous, current) =>
+                current is FecthUserLoading ||
+                current is FetchUser ||
+                current is FetchUserError,
+
+            builder: (context, state) {
+              if (state is FecthUserLoading) {
+                return AppBar(
+                  leading: const CircularProgressIndicator.adaptive(),
+                  title: const Text("Loading"),
+                  centerTitle: true,
+                );
+              } else if (state is FetchUser) {
+                final user = state.userData;
+                return AppBar(
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: CircleAvatar(
+                      radius: size.height * 0.025,
+                      backgroundImage: CachedNetworkImageProvider(
+                        "https://cdn4.vectorstock.com/i/1000x1000/82/33/person-gray-photo-placeholder-woman-vector-24138233.jpg",
+                      ),
+                    ),
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.username.isNotEmpty
+                            ? "Hi,${user.username}"
+                            : "Hi,username",
+                        style: Theme.of(context).textTheme.titleMedium!
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "Lets's go shopping!",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleSmall!.copyWith(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.notifications),
+                    ),
+                  ],
+                );
+              }
+              return AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: CircleAvatar(
+                    radius: size.height * 0.025,
+                    backgroundImage: CachedNetworkImageProvider(
+                      "https://cdn4.vectorstock.com/i/1000x1000/82/33/person-gray-photo-placeholder-woman-vector-24138233.jpg",
+                    ),
                   ),
                 ),
-                Text(
-                  "Lets's go shopping!",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall!.copyWith(color: Colors.grey),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hi,default username",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      "Lets's go shopping!",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleSmall!.copyWith(color: Colors.grey),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            actions: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
-            ],
+                actions: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                  IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+                ],
+              );
+            },
           );
         } else if (selectedIndex == 1) {
           return AppBar(title: Text("My Cart"), centerTitle: true);

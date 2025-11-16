@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shopora_e_commerce/model/user_data_model.dart';
+import 'package:shopora_e_commerce/services/firestore_services.dart';
+import 'package:shopora_e_commerce/utils/api_paths.dart';
 
 abstract class AuthService {
   Future<bool> signInWithEmailAndPassword(String email, String password);
@@ -9,12 +12,14 @@ abstract class AuthService {
   User? getCuurentUser();
   Future<bool> authenticateWithGoogle();
   Future<bool> authenticateWithFacebook();
+  Future<UserDataModel> fetchUserData(String uid);
 }
 
 class AuthServiceImpl implements AuthService {
   final _fireBaseAuth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn.instance;
   final _facebookSignIn = FacebookAuth.instance;
+  final _fireStoreServices = FirestoreServices.instance;
   List<String> scopes = <String>[
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
@@ -118,4 +123,11 @@ class AuthServiceImpl implements AuthService {
       return false;
     }
   }
+
+  @override
+  Future<UserDataModel> fetchUserData(String uid) async =>
+      await _fireStoreServices.getDocument<UserDataModel>(
+        path: ApiPaths.user(uid),
+        builder: (data, documentID) => UserDataModel.fromMap(data),
+      );
 }
