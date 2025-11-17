@@ -151,7 +151,7 @@ The app follows the BLoC pattern for state management, ensuring a clean and scal
 | :---: | :---: | :---: |
 | ![Splash Screen](assets/screenshots/splash_screen.png) | ![Welcome Notification](assets/screenshots/welcome_notification.png) | ![New Item Notification](assets/screenshots/newItem_notification.png) |
 | **Sign In Screen** | **Google Sign In** | **Home Screen** |
-| ![Sign In Screen](assets/screenshots/sign_in_screen.png) | ![Google Sign In](assets/screenshots/google_sign_in.png) | ![Home Screen](assets/screenshots/home_screen.png) |
+| ![Sign In Screen](assets/screenShots/login.png) | ![Google Sign In](assets/screenshots/google_sign_in.png) | ![Home Screen](assets/screenshots/home_screen.png) |
 | **Category Screen** | **My Cart Screen** | **Favorite Screen** |
 | ![Category Screen](assets/screenshots/category_screen.png) | ![My Cart Screen](assets/screenshots/myCart_screeen.png) | ![Favorite Screen](assets/screenshots/favorite_screen.png) |
 | **Empty Favorite Screen** | **Checkout Screen** | **Empty Checkout Screen** |
