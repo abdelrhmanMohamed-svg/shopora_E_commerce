@@ -149,7 +149,7 @@ The app follows the BLoC pattern for state management, ensuring a clean and scal
 
 | Splash Screen | Welcome Notification | New Item Notification |
 | :---: | :---: | :---: |
-| ![Splash Screen](assets/screenshots/splash_screen.png) | ![Welcome Notification](assets/screenshots/welcome_notification.png) | ![New Item Notification](assets/screenshots/newItem_notification.png) |
+| ![Splash Screen](assets/screenShots/splash_screen.png) | ![Welcome Notification](assets/screenshots/welcome_notification.png) | ![New Item Notification](assets/screenshots/newItem_notification.png) |
 | **Sign In Screen** | **Google Sign In** | **Home Screen** |
 | ![Sign In Screen](assets/screenshots/sign_in_screen.png) | ![Google Sign In](assets/screenshots/google_sign_in.png) | ![Home Screen](assets/screenshots/home_screen.png) |
 | **Category Screen** | **My Cart Screen** | **Favorite Screen** |
