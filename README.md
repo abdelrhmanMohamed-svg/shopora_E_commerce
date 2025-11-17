@@ -149,17 +149,17 @@ The app follows the BLoC pattern for state management, ensuring a clean and scal
 
 | Splash Screen | Welcome Notification | New Item Notification |
 | :---: | :---: | :---: |
-| ![Splash Screen](assets/screenShots/splash_screen.png) | ![Welcome Notification](assets/screenshots/welcome_notification.png) | ![New Item Notification](assets/screenshots/newItem_notification.png) |
+| ![Splash Screen](assets/screenShots/splash_screen.png) | ![Welcome Notification](assets/screenShots/welcome_notification.png) | ![New Item Notification](assets/screenShots/newItem_notification.png) |
 | **Sign In Screen** | **Google Sign In** | **Home Screen** |
-| ![Sign In Screen](assets/screenshots/sign_in_screen.png) | ![Google Sign In](assets/screenshots/google_sign_in.png) | ![Home Screen](assets/screenshots/home_screen.png) |
+| ![Sign In Screen](assets/screenShots/sign_in_screen.png) | ![Google Sign In](assets/screenShots/google_sign_in.png) | ![Home Screen](assets/screenShots/home_screen.png) |
 | **Category Screen** | **My Cart Screen** | **Favorite Screen** |
-| ![Category Screen](assets/screenshots/category_screen.png) | ![My Cart Screen](assets/screenshots/myCart_screeen.png) | ![Favorite Screen](assets/screenshots/favorite_screen.png) |
+| ![Category Screen](assets/screenShots/category_screen.png) | ![My Cart Screen](assets/screenShots/myCart_screeen.png) | ![Favorite Screen](assets/screenShots/favorite_screen.png) |
 | **Empty Favorite Screen** | **Checkout Screen** | **Empty Checkout Screen** |
-| ![Empty Favorite Screen](assets/screenshots/empty_favorite_screen.png) | ![Checkout Screen](assets/screenshots/checkout_sreen.png) | ![Empty Checkout Screen](assets/screenshots/empty_checkout_screen.png) |
+| ![Empty Favorite Screen](assets/screenShots/empty_favorite_screen.png) | ![Checkout Screen](assets/screenShots/checkout_screen_2.png) | ![Empty Checkout Screen](assets/screenShots/empty_checkout_screen.png) |
 | **Locations Screen** | **Empty Locations Screen** | **Payment Cards Sheet** |
-| ![Locations Screen](assets/screenshots/locations_screen.png) | ![Empty Locations Screen](assets/screenshots/empty_locations_screen.png) | ![Payment Cards Sheet](assets/screenshots/payment_cards_sheet.png) |
+| ![Locations Screen](assets/screenShots/locations_screen.png) | ![Empty Locations Screen](assets/screenShots/empty_locations_screen.png) | ![Payment Cards Sheet](assets/screenShots/payment_cards_sheet.png) |
 | **Success Order Sheet** | **Profile Screen** |
-| ![Success Order Sheet](assets/screenshots/success_order_sheet.png) | ![Profile Screen](assets/screenshots/profile_screen.png) |
+| ![Success Order Sheet](assets/screenShots/success_order_sheet.png) | ![Profile Screen](assets/screenShots/profile_screen.png) |
 
 ## Usage
 
