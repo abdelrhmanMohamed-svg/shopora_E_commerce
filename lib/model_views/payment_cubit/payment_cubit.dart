@@ -53,6 +53,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       if (isSelctedCards.isNotEmpty) {
         chosenCard = isSelctedCards.first;
       }
+      chosenCard ??= paymentCards.first;
 
       emit(ChooseCard(card: chosenCard!));
     } catch (e) {

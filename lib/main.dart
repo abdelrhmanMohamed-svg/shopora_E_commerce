@@ -5,6 +5,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shopora_e_commerce/firebase_options.dart';
 import 'package:shopora_e_commerce/model_views/auth_cubit/auth_cubit.dart';
 import 'package:shopora_e_commerce/model_views/favorites_cubit/favorites_cubit.dart';
+import 'package:shopora_e_commerce/services/notifications_services.dart';
+import 'package:shopora_e_commerce/services/work_manager_services.dart';
 import 'package:shopora_e_commerce/utils/app_colors.dart';
 import 'package:shopora_e_commerce/utils/app_router.dart';
 import 'package:shopora_e_commerce/utils/app_routes.dart';
@@ -13,8 +15,11 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Future.wait([
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    NotificationsServices.instance.init(),
+    WorkManagerServices.instance.init(),
+  ]);
 
   runApp(const MyApp());
 }

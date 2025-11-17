@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopora_e_commerce/model_views/category_cubit/category_cubit.dart';
 import 'package:shopora_e_commerce/model_views/home_cubit/home_cubit.dart';
+import 'package:shopora_e_commerce/services/notifications_services.dart';
 
 import 'package:shopora_e_commerce/utils/app_colors.dart';
+import 'package:shopora_e_commerce/utils/app_routes.dart';
 import 'package:shopora_e_commerce/views/widgets/category_tab_view.dart';
 
 import 'package:shopora_e_commerce/views/widgets/home_tab_view.dart';
@@ -17,11 +20,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
+  StreamSubscription? _notificationSubscription;
 
   @override
   void initState() {
     super.initState();
+    _notificationSubscription =
+        NotificationsServices.stremController.stream.listen(
+      (notificationResponse) =>
+          Navigator.of(context, rootNavigator: true).pushNamed(
+        AppRoutes.productDetailsRoute,
+        arguments: notificationResponse.payload,
+      ),
+    );
     _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _notificationSubscription?.cancel();
+    super.dispose();
   }
 
   @override

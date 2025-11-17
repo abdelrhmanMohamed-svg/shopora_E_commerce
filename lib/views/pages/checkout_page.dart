@@ -352,7 +352,7 @@ class CheckoutPage extends StatelessWidget {
         : EpmtyPaymentAddress(
             title: "Add new payment method",
             onTap: () => Navigator.of(context, rootNavigator: true)
-                .pushNamed(AppRoutes.addCardRoute)
+                .pushNamed(AppRoutes.addCardRoute,arguments: BlocProvider.of<PaymentCubit>(context))
                 .then((value) {
                   BlocProvider.of<CheckoutCubit>(context).loadCheckoutData();
                 }),
